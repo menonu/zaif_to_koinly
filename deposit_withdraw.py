@@ -61,8 +61,8 @@ for coin in currencies:
 
             JST = timezone(timedelta(hours=+9), 'JST')
             dt = datetime.fromtimestamp(int(ts), tz=JST)
-            utc = dt.astimezone(timezone.utc)
-            if year == 'all' or utc.year == int(year):
+            if year == 'all' or dt.year == int(year):
+                utc = dt.astimezone(timezone.utc)
                 writer.writerow([utc.replace(tzinfo=None).isoformat(sep=' '), size, coin])
 
 

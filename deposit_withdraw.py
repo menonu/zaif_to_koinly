@@ -20,6 +20,10 @@ methods = ["deposit_history", "withdraw_history"]
 API = os.environ.get("ZAIF_API")
 SECRET = os.environ.get("ZAIF_SECRET")
 
+if len(sys.argv) < 2:
+    print("Usage: ./deposit_withdraw year\nYear must be YYYY or all")
+year = sys.argv[1]
+
 with open('nonce') as f:
     nonce_read = f.readline()
 
@@ -58,7 +62,8 @@ for coin in currencies:
             JST = timezone(timedelta(hours=+9), 'JST')
             dt = datetime.fromtimestamp(int(ts), tz=JST)
             utc = dt.astimezone(timezone.utc)
-            writer.writerow([utc.replace(tzinfo=None).isoformat(sep=' '), size, coin])
+            if year == 'all' or utc.year == int(year):
+                writer.writerow([utc.replace(tzinfo=None).isoformat(sep=' '), size, coin])
 
 
         time.sleep(7)
